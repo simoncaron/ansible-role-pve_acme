@@ -39,7 +39,7 @@
 
 - name: Add ACME account configuration
   ansible.builtin.expect:
-    command: pvenode acme account register {{ pve_acme_plugin_name }} {{ pve_acme_account_email }} --directory {{ pve_acme_account_directory }}
+    command: pvenode acme account register {{ pve_acme_account_name }} {{ pve_acme_account_email }} --directory {{ pve_acme_account_directory }}
     responses:
       Do you agree to the above terms.*: y
   when: acme_account_list.stdout | length == 0
