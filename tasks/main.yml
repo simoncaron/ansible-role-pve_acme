@@ -1,0 +1,6 @@
+---
+- name: Install prerequisites
+  ansible.builtin.include_tasks: prereq.yml
+
+- name: Configure acme pve certificate
+  ansible.builtin.include_tasks: pve-acme.yml

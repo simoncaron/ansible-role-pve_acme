@@ -1,0 +1,4 @@
+---
+- name: Install pexpect
+  ansible.builtin.pip:
+    name: pexpect

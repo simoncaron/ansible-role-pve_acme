@@ -1,0 +1,10 @@
+---
+pve_acme_domain: ""
+
+pve_acme_account_name: default
+pve_acme_account_email: ""
+pve_acme_account_directory: "https://acme-v02.api.letsencrypt.org/directory"
+
+pve_acme_plugin_name: ""
+pve_acme_plugin_api: ""
+pve_acme_plugin_data: ""

@@ -1,0 +1,62 @@
+---
+- name: Check if default ACME account is registered
+  ansible.builtin.command:
+    cmd: pvenode acme plugin list
+  register: acme_plugin_list
+  changed_when: false
+  ignore_errors: true
+
+- name: Create DNS plugin temp file
+  ansible.builtin.tempfile:
+    state: file
+  register: temp_config
+  when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+
+- name: Fill DNS config file
+  ansible.builtin.copy:
+    content: "{{ pve_acme_plugin_data }}"
+    dest: "{{ temp_config.path }}"
+    mode: "0600"
+  when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+
+- name: Add ACME plugin configuration
+  ansible.builtin.command:
+    cmd: pvenode acme plugin add dns {{ pve_acme_plugin_name }} --api {{ pve_acme_plugin_api }} --data {{ temp_config.path }}
+  when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+
+- name: Clear temporary file
+  ansible.builtin.file:
+    path: "{{ temp_config.path }}"
+    state: absent
+  when: temp_config.path is defined
+
+- name: Check if default ACME account is registered
+  ansible.builtin.command:
+    cmd: pvenode acme account list
+  register: acme_account_list
+  changed_when: false
+  ignore_errors: true
+
+- name: Add ACME account configuration
+  ansible.builtin.expect:
+    command: pvenode acme account register {{ pve_acme_plugin_name }} {{ pve_acme_account_email }} --directory {{ pve_acme_account_directory }}
+    responses:
+      Do you agree to the above terms.*: y
+  when: acme_account_list.stdout | length == 0
+  notify: Order ACME certificates
+
+- name: Check if ACME domain is already configured
+  ansible.builtin.command:
+    cmd: "grep -Fxq 'acmedomain0: domain={{ pve_acme_domain }},plugin={{ pve_acme_plugin_name }}' /etc/pve/local/config"
+  register: acme_domain_list
+  check_mode: false
+  ignore_errors: true
+  changed_when: false
+
+- name: Add ACME domain configuration
+  ansible.builtin.command:
+    cmd: pvenode config set --acmedomain0 domain={{ pve_acme_domain }},plugin={{ pve_acme_plugin_name }}
+  when: acme_domain_list.rc != 0
+  notify: Order ACME certificates
+
+
