@@ -58,5 +58,3 @@
     cmd: pvenode config set --acmedomain0 domain={{ pve_acme_domain }},plugin={{ pve_acme_plugin_name }}
   when: acme_domain_list.rc != 0
   notify: Order ACME certificates
-
-
