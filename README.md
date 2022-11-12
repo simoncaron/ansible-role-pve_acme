@@ -1,6 +1,8 @@
 Ansible Role: Proxmox VE Acme Config
 =========
 
+![Lint](https://github.com/simoncaron/ansible-role-pve_acme/actions/workflows/lint.yml/badge.svg)
+
 An Ansible Role that configures acme plugin and certificates for a Proxmox VE node. 
 
 This role was tested on Proxmox VE 7.2.
