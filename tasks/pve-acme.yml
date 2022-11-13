@@ -18,6 +18,7 @@
     dest: "{{ temp_config.path }}"
     mode: "0600"
   when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+  no_log: true
 
 - name: Add ACME plugin configuration
   ansible.builtin.command:
