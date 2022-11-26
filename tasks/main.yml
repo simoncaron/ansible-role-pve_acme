@@ -4,3 +4,6 @@
 
 - name: Configure acme pve certificate
   ansible.builtin.include_tasks: pve-acme.yml
+
+- name: Ensure certificates are ordered
+  ansible.builtin.meta: flush_handlers
