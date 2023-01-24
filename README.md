@@ -12,7 +12,7 @@ This role was tested on Proxmox VE 7.2.
 Requirements
 ------------
 
-This role requires `pexpect` to configure the various CLI prompts. If the module is missing from the host, a prerequiste task will install it.
+This role requires `pexpect` to configure the various CLI prompts. If the module is missing from the host, a prerequiste task will install it along with the `python3-pip` package.
 
 Role Variables
 --------------
