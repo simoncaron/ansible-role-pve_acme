@@ -22,7 +22,7 @@
 
 - name: Add ACME plugin configuration
   ansible.builtin.command:
-    cmd: pvenode acme plugin add dns {{ pve_acme_plugin_name }} --api {{ pve_acme_plugin_api }} --data {{ temp_config.path }}
+    cmd: pvenode acme plugin add dns {{ pve_acme_plugin_name }} --api {{ pve_acme_plugin_api }} --validation-delay {{ pve_acme_validation_delay }} --data {{ temp_config.path }}
   when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
 
 - name: Clear temporary file
