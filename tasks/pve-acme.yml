@@ -20,13 +20,17 @@
         content: "{{ pve_acme_plugin_data }}"
         dest: "{{ temp_config.path }}"
         mode: "0600"
-      when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+      when:
+        - pve_acme_plugin_name | string not in acme_plugin_list.stdout
+        - temp_config.path is defined
       no_log: true
 
     - name: Add ACME plugin configuration
       ansible.builtin.command:
         cmd: pvenode acme plugin add dns {{ pve_acme_plugin_name }} --api {{ pve_acme_plugin_api }} --validation-delay {{ pve_acme_validation_delay }} --data {{ temp_config.path }}
-      when: pve_acme_plugin_name | string not in acme_plugin_list.stdout
+      when:
+        - pve_acme_plugin_name | string not in acme_plugin_list.stdout
+        - temp_config.path is defined
 
     - name: Clear temporary file
       ansible.builtin.file:
