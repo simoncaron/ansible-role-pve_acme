@@ -7,7 +7,7 @@ Ansible Role: Proxmox VE Acme Config
 
 An Ansible Role that configures acme plugin and certificates for a Proxmox VE node. 
 
-This role was tested on Proxmox VE 7.2.
+This role was tested on Proxmox VE 9.0.
 
 Requirements
 ------------
